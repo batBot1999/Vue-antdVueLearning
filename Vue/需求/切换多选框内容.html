@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <input type="radio" id="one" value="One" v-model="picked" @click="showList1">
+    <label for="one">One</label>
+    <br>
+    <input type="radio" id="two" value="Two" v-model="picked" @click="showList2">
+    <label for="two">Two</label>
+    <br>
+    <input type="radio" id="three" value="Three" v-model="picked" @click="showList3">
+    <label for="three">Three</label>
+    <br>
+    <span>Picked: {{ picked }}</span>
+    <br>
+    <ol>
+      <li v-for="value in dataLists">
+       列表内容: {{ value }}
+      </li>
+    </ol>
+    <br>
+    <input type="checkbox" name="" id="">{{  checkBox.item1  }}
+    <input type="checkbox" name="" id="">{{  checkBox.item2  }}
+    <input type="checkbox" name="" id="">{{  checkBox.item3  }}
+  </div>
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<script>
+  var app = new Vue({
+  el: '#app',
+  data: {
+    picked: '',
+    listContent: '',
+    dataLists: {
+      item1: "aaa",
+      item2: "bbb",
+      item3: "ccc",
+      item4: "ddd"
+    },
+    dataList1: {
+      item1: "aaa",
+      item2: "bbb",
+      item3: "ccc",
+      item4: "ddd"
+    },
+    dataList2: {
+      item1: "eee",
+      item2: "fff",
+      item3: "ggg",
+      item4: "hhh"
+    },
+    dataList3: {
+      item1: "iii",
+      item2: "jjj",
+      item3: "kkk",
+      item4: "lll"
+    },
+    checkBox: {
+      item1: "checkBox.item1",
+      item2: "checkBox.item2",
+      item3: "checkBox.item3"
+    },
+    checkBox1: {
+      item1: "checkBox1.item1",
+      item2: "checkBox1.item2",
+      item3: "checkBox1.item3"
+    },
+    checkBox2: {
+      item1: "checkBox2.item1",
+      item2: "checkBox2.item2",
+      item3: "checkBox2.item3"
+    },
+    checkBox3: {
+      item1: "checkBox3.item1",
+      item2: "checkBox3.item2",
+      item3: "checkBox3.item3"
+    },
+  },
+
+  methods: {
+    showList1:function() {
+      Object.assign(this.dataLists, this.dataList1);
+      Object.assign(this.checkBox, this.checkBox1);
+    },
+    showList2:function() {
+      Object.assign(this.dataLists, this.dataList2);
+      Object.assign(this.checkBox, this.checkBox2);
+
+    },
+    showList3:function() {
+      Object.assign(this.dataLists, this.dataList3);
+      Object.assign(this.checkBox, this.checkBox3);
+
+    },
+    // showCheckbox1:function() {
+    //   Object.assign(this.checkBox, this.checkBox1);
+    // },
+    // showCheckbox2:function() {
+    //   Object.assign(this.checkBox, this.checkBox2);
+    // },
+    // showCheckbox3:function() {
+    //   Object.assign(this.checkBox, this.checkBox3);
+    // },
+  },
+
+})
+</script>
+</html>

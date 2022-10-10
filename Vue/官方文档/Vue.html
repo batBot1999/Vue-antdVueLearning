@@ -10,7 +10,7 @@
   <div id="app">
     {{ message0 }}
     <hr>
-    <span v-bind:title="message1">
+    <span :title="message1">
       鼠标悬停几秒钟查看此处动态绑定的提示信息！
     </span>
     <hr>
@@ -24,7 +24,7 @@
     </ol>
     <hr>
     <p>{{ message2 }}</p>
-    <button @click="reverseMessage">反转消息</button>
+    <button @click="reverseMessage2">反转消息</button>
     <hr>
     <p>{{ message3 }}</p>
     <input v-model="message3">
@@ -38,10 +38,36 @@
       -->
       <todo-item
         v-for="item in groceryList"
-        v-bind:todo="item"
-        v-bind:key="item.id"
+        :todo="item"
+        :key="item.id"
       ></todo-item>
     </ol>
+    <hr>
+    <span v-once>这个将不会改变: {{ msg0 }}</span>
+    <hr>
+    <p>Using mustaches: {{ rawHtml }}</p>
+    <p>Using v-html directive: <span v-html="rawHtml" style="color: red"></span></p>
+    <hr>
+    <p>此按钮只可点击一次</p>
+    <button :disabled="buttonDisabled" @click="isButtonDisabled">Button</button>
+    <hr>
+    <!-- 模板内表达式可用于简单计算,在模板中放入太多的逻辑会让模板过重且难以维护。 -->
+    <div>
+      {{ message4.split('').reverse().join('') }}
+    </div>
+    <hr>
+    <!-- 所以，对于任何复杂逻辑，你都应当使用计算属性 -->
+    <div>
+      <p>Original message5: {{ message5 }}</p>
+      <p>Computed reversed message5: {{ reversedMessage5 }}</p>
+    </div>
+    <hr>
+    <p>methods中的Date.now():{{  dateNow  }}</p>
+    <button  @click="methodsNow">Button</button>
+    <p>computed中的Date.now():{{  computedNow  }}</p>
+    <hr>
+
+
 
   </div>
 </body>
@@ -57,12 +83,19 @@
   var app = new Vue({
   el: '#app',
   data: {
-    message0: 'Hello Vue!',
+    created: '我是created',
+    message0: 'Hello message0!',
     message1: '页面加载于 ' + new Date().toLocaleString(),
-    message2: 'Hello Vue.js!',
-    message3: 'Hello Vue!',
-    seenText: "隐藏",
+    message2: 'Hello message2!',
+    message3: 'Hello message3!',
+    message4: 'Hello message4!',
+    message5: 'Hello message5!',
+    msg0: '我是v-once',
+    rawHtml: 'This should be red',
+    seenText: '隐藏',
     seen: true,
+    buttonDisabled: false,
+    dateNow: '',
     letters: [
       { text: 'aaa' },
       { text: 'bbb' },
@@ -74,6 +107,19 @@
       { id: 2, text: '随便其它什么人吃的东西' }
     ]
   },
+
+  // 计算属性是基于它们的响应式依赖进行缓存的。只在相关响应式依赖发生改变时它们才会重新求值。
+  // 假设我们有一个性能开销比较大的计算属性 A，它需要遍历一个巨大的数组并做大量的计算。
+  // 然后我们可能有其他的计算属性依赖于 A。如果没有缓存，我们将不可避免的多次执行 A 的 getter！如果你不希望有缓存，请用方法来替代。
+  computed: {
+    reversedMessage5: function() {
+      return this.message5.split('').reverse().join('');
+    },
+    computedNow: function() {
+      return Date.now();
+    }
+  },
+
   methods: {
     toggleSeen:function() {
       this.seen = !this.seen;
@@ -83,9 +129,20 @@
         this.seenText = "显示"
       }
     },
-    reverseMessage:function() {
-      this.message2 = this.message2.split('').reverse().join('')
+    reverseMessage2:function() {
+      this.message2 = this.message2.split('').reverse().join('');
+    },
+    isButtonDisabled:function() {
+      this.buttonDisabled = !this.buttonDisabled;
+    },
+    methodsNow:function() {
+      this.dateNow = Date.now();
     }
+  },
+
+  // created 钩子可以用来在一个实例被创建之后执行代码
+  created: function () {
+    console.log(this.created);
   }
 })
 </script>
