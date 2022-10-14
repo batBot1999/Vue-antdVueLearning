@@ -1,56 +1,35 @@
 <template>
-  <p>{{ message }}</p>
-  <button @click="message = '你好'">改变message</button>
-  <!-- v-model:数据双向绑定 -->
-  <input type="text" v-model="message" />
-  <p>{{ user.name }}</p>
-  <button @click="user.name = '李BB'">改变名字</button>
+  <p>v-model绑定</p>
+  <input type="text" v-model="msg">
+  <h1>{{ msg }}</h1>
+  <!-- v-model原理 -->
+  <!--
+    本质为两个操作:
+      1. v-bind绑定一个value属性
+      2. v-on给当前元素添加一个input事件
+      3.
+   -->
+  <input type="text" :value="msg" @input="changeValue">
+  <hr>
 </template>
 
 <script>
 export default {
-  data() {
+  data () {
     return {
-      message: "helloworld",
-      age: 0,
-      user: {
-        name: "刘AA",
-      }
-    };
-  },
-
-  methods: {},
-
-  // 监听数据的变化
-  watch: {
-    // 不需要this
-    // 每当message发生变化时,就会调用这个函数
-    // 一个数据影响多个数据
-    // message:function(newValue, oldValue) {
-    //   console.log("newValue", newValue);
-    //   console.log("oldValue", oldValue);
-
-    //   // 执行异步操作或者复杂逻辑代码
-    //   if (newValue.length < 5 ||newValue.length > 10) {
-    //     console.log("输入框中内容长度不能小于5或大于10")
-    //   }
-    // }
-
-    message: {
-      immdeiate: true, // 表示初始化时调用函数
-      handler: function (newValue) {
-        if (newValue.length < 5 || newValue.length > 10) {
-          console.log("输入框中内容长度不能小于5或大于10");
-        }
-      },
-    },
-
-      // watch可以监听数据,但如果数据是一个对象,那么他不能监听到对象的属性的变化,所以需要使用深度监听。
-    user:function(newValue) {
-      console.log(newValue); // con
+      counter: 0,
+      msg: "helloworld"
     }
   },
-};
+  methods: {
+    changeValue(e) {
+      console.log(e);
+      this.msg = e.target.value;
+    }
+  }
+}
 </script>
 
-<style></style>
+<style>
+
+</style>
