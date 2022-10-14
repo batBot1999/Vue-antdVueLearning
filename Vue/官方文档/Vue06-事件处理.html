@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <h1>事件处理方法</h1>
+    <button @click="counter++">+1</button>
+    <p>已经点击{{ counter }}次了.</p>
+    <hr>
+    <button @click="greet">点击alert</button>
+    <hr>
+    <h1>内联处理器中的方法</h1>
+    <!-- 直接内联写方法 -->
+    <button @click="say('hi')">Say hi</button>
+    <button @click="say('what')">Say what</button>
+    <hr>
+    <p>有时也需要在内联语句处理器中访问原始的 DOM 事件。可以用特殊变量 $event 把它传入方法：</p>
+    <button @click="warn('Form cannot be submitted yet.', $event)">Submit</button>
+    <hr>
+  </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<script>
+  new Vue({
+    el: app,
+    data: {
+      counter: 0,
+      name: "bob"
+    },
+    methods: {
+      greet: function(event){
+        alert('hello' + this.name + '!');
+        if (event) {
+          alert(event.target.tagName); // 显示标签名
+        }
+      },
+      // param是形参
+      say: function (param) {
+      alert(param)
+    },
+    warn: function (message, event) {
+      if (event) {
+        event.preventDefault();
+        alert("已阻止表单提交");
+      }
+      alert(message);
+    }
+    }
+  })
+</script>
+</html>

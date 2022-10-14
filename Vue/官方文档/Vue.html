@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
 </head>
+
 <body>
   <div id="app">
     {{ message0 }}
@@ -36,11 +38,7 @@
         我们也需要为每个组件提供一个“key”，稍后再
         作详细解释。
       -->
-      <todo-item
-        v-for="item in groceryList"
-        :todo="item"
-        :key="item.id"
-      ></todo-item>
+      <todo-item v-for="item in groceryList" :todo="item" :key="item.id"></todo-item>
     </ol>
     <hr>
     <span v-once>这个将不会改变: {{ msg0 }}</span>
@@ -63,87 +61,180 @@
     </div>
     <hr>
     <p>methods中的Date.now():{{  dateNow  }}</p>
-    <button  @click="methodsNow">Button</button>
+    <button @click="methodsNow">Button</button>
     <p>computed中的Date.now():{{  computedNow  }}</p>
     <hr>
+    <!-- watch侦听命令式且重复 -->
+    <div>{{ fullName1 }}</div>
+    <div>{{ firstName1  }}</div>
+    <div>{{  lastName1  }}</div>
+    <!-- 在f12控制台中输入app.lastName 得到'Bar' -->
+    <!-- 输入app.lastName = "aaa"; 可以看到fullName变成了Foo aaa -->
+    <hr>
+    <!-- 计算属性 -->
+    <div>{{ fullName2 }}</div>
+    <div>{{ firstName2  }}</div>
+    <div>{{  lastName2  }}</div>
+    <hr>
+    <!-- 侦听器 -->
+    <p>
+      Ask a yes/no question:
+      <input v-model="question">
+    </p>
+    <p>{{ answer }}</p>
+    <hr>
+    <div v-bind:class="classObject">sDassadf</div>
+
+
 
 
 
   </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
 <script>
   Vue.component('todo-item', {
-  // todo-item 组件现在接受一个
-  // "prop"，类似于一个自定义 attribute。
-  // 这个 prop 名为 todo。
-  props: ['todo'],
-  template: '<li>{{ todo.text }}</li>'
-})
+    // todo-item 组件现在接受一个
+    // "prop"，类似于一个自定义 attribute。
+    // 这个 prop 名为 todo。
+    props: ['todo'],
+    template: '<li>{{ todo.text }}</li>'
+  })
   var app = new Vue({
-  el: '#app',
-  data: {
-    created: '我是created',
-    message0: 'Hello message0!',
-    message1: '页面加载于 ' + new Date().toLocaleString(),
-    message2: 'Hello message2!',
-    message3: 'Hello message3!',
-    message4: 'Hello message4!',
-    message5: 'Hello message5!',
-    msg0: '我是v-once',
-    rawHtml: 'This should be red',
-    seenText: '隐藏',
-    seen: true,
-    buttonDisabled: false,
-    dateNow: '',
-    letters: [
-      { text: 'aaa' },
-      { text: 'bbb' },
-      { text: 'ccc' }
-    ],
-    groceryList: [
-      { id: 0, text: '蔬菜' },
-      { id: 1, text: '奶酪' },
-      { id: 2, text: '随便其它什么人吃的东西' }
-    ]
-  },
-
-  // 计算属性是基于它们的响应式依赖进行缓存的。只在相关响应式依赖发生改变时它们才会重新求值。
-  // 假设我们有一个性能开销比较大的计算属性 A，它需要遍历一个巨大的数组并做大量的计算。
-  // 然后我们可能有其他的计算属性依赖于 A。如果没有缓存，我们将不可避免的多次执行 A 的 getter！如果你不希望有缓存，请用方法来替代。
-  computed: {
-    reversedMessage5: function() {
-      return this.message5.split('').reverse().join('');
+    el: '#app',
+    data: {
+      created: '我是created',
+      message0: 'Hello message0!',
+      message1: '页面加载于 ' + new Date().toLocaleString(),
+      message2: 'Hello message2!',
+      message3: 'Hello message3!',
+      message4: 'Hello message4!',
+      message5: 'Hello message5!',
+      msg0: '我是v-once',
+      rawHtml: 'This should be red',
+      seenText: '隐藏',
+      seen: true,
+      buttonDisabled: false,
+      dateNow: '',
+      firstName1: 'Foo1',
+      lastName1: 'Bar1',
+      fullName1: 'Foo1 Bar1',
+      firstName2: 'Foo2',
+      lastName2: 'Bar2',
+      question: '',
+      answer: 'I cannot give you an answer until you ask a question!',
+      isActive: true,
+      error: null,
+      letters: [{
+          text: 'aaa'
+        },
+        {
+          text: 'bbb'
+        },
+        {
+          text: 'ccc'
+        }
+      ],
+      groceryList: [{
+          id: 0,
+          text: '蔬菜'
+        },
+        {
+          id: 1,
+          text: '奶酪'
+        },
+        {
+          id: 2,
+          text: '随便其它什么人吃的东西'
+        }
+      ]
     },
-    computedNow: function() {
-      return Date.now();
-    }
-  },
 
-  methods: {
-    toggleSeen:function() {
-      this.seen = !this.seen;
-      if (this.seen) {
-        this.seenText = "隐藏"
-      } else {
-        this.seenText = "显示"
+    // 计算属性是基于它们的响应式依赖进行缓存的。只在相关响应式依赖发生改变时它们才会重新求值。
+    // 假设我们有一个性能开销比较大的计算属性 A，它需要遍历一个巨大的数组并做大量的计算。
+    // 然后我们可能有其他的计算属性依赖于 A。如果没有缓存，我们将不可避免的多次执行 A 的 getter！如果你不希望有缓存，请用方法来替代。
+    computed: {
+      reversedMessage5: function () {
+        return this.message5.split('').reverse().join('');
+      },
+      computedNow: function () {
+        return Date.now();
+      },
+      fullName2: function () {
+        return this.firstName2 + ' ' + this.lastName2
+      },
+      classObject: function () {
+        return {
+          active: this.isActive && !this.error,
+          'text-danger': this.error && this.error.type === 'fatal'
+        }
       }
     },
-    reverseMessage2:function() {
-      this.message2 = this.message2.split('').reverse().join('');
-    },
-    isButtonDisabled:function() {
-      this.buttonDisabled = !this.buttonDisabled;
-    },
-    methodsNow:function() {
-      this.dateNow = Date.now();
-    }
-  },
 
-  // created 钩子可以用来在一个实例被创建之后执行代码
-  created: function () {
-    console.log(this.created);
-  }
-})
+    methods: {
+      toggleSeen: function () {
+        this.seen = !this.seen;
+        if (this.seen) {
+          this.seenText = "隐藏"
+        } else {
+          this.seenText = "显示"
+        }
+      },
+      reverseMessage2: function () {
+        this.message2 = this.message2.split('').reverse().join('');
+      },
+      isButtonDisabled: function () {
+        this.buttonDisabled = !this.buttonDisabled;
+      },
+      methodsNow: function () {
+        this.dateNow = Date.now();
+      },
+      getAnswer: function () {
+        if (this.question.indexOf('?') === -1) {
+          this.answer = 'Questions usually contain a question mark. ;-)'
+          return
+        }
+        this.answer = 'Thinking...'
+        var vm = this
+        axios.get('https://yesno.wtf/api')
+          .then(function (response) {
+            vm.answer = _.capitalize(response.data.answer)
+          })
+          .catch(function (error) {
+            vm.answer = 'Error! Could not reach the API. ' + error
+          })
+      }
+
+    },
+
+    watch: {
+      firstName1: function (val) {
+        this.fullName1 = val + ' ' + this.lastName1
+      },
+      lastName1: function (val) {
+        this.fullName1 = this.firstName1 + ' ' + val
+      },
+      // 如果 `question` 发生改变，这个函数就会运行
+      question: function (newQuestion, oldQuestion) {
+        this.answer = 'Waiting for you to stop typing...'
+        this.debouncedGetAnswer()
+      }
+
+    },
+
+    // created 钩子可以用来在一个实例被创建之后执行代码
+    created: function () {
+      console.log(this.created);
+      // `_.debounce` 是一个通过 Lodash 限制操作频率的函数。
+      // 在这个例子中，我们希望限制访问 yesno.wtf/api 的频率
+      // AJAX 请求直到用户输入完毕才会发出。想要了解更多关于
+      // `_.debounce` 函数 (及其近亲 `_.throttle`) 的知识，
+      // 请参考：https://lodash.com/docs#debounce
+      this.debouncedGetAnswer = _.debounce(this.getAnswer, 500);
+    }
+  })
 </script>
+
 </html>

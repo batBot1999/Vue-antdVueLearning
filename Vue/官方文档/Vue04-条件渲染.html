@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <p>v-if 指令用于条件性地渲染一块内容。这块内容只会在指令的表达式返回 truthy 值的时候被渲染。</p>
+    <button @click="yesOrNo">切换yes/no</button>
+    <h1 v-if="awesome">yes</h1>
+    <h1 v-else>no</h1>
+    <hr>
+    <p>在"template" 元素上使用 v-if 条件渲染分组</p>
+    <button @click="isOk">点击使template消失</button>
+    <template v-if="ok">
+      <h1>template内容</h1>
+      <p>template内容</p>
+      <p>template内容</p>
+    </template>
+    <p v-else>已隐藏template</p>
+    <hr>
+    <p>v-else-if，顾名思义，充当 v-if 的“else-if 块”，可以连续使用</p>
+    <!-- <button @click="switchABC">点击切换ABC</button> -->
+    <div v-if="type == 'A'">A</div>
+    <div v-else-if="type == 'B'">B</div>
+    <div v-else="type == 'C'">C</div>
+    <div v-else="type == 'D'">D</div>
+    <div v-else>
+      Not A/B/C
+    </div>
+    <hr>
+
+
+  </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<script>
+  var app = new Vue({
+    el: '#app',
+    data: {
+      awesome: true,
+      ok: true,
+      // 在控制台用app.type = 'A'/'B'/'C'/'D'/"其他"来切换
+      type: 'A'
+
+    },
+
+    computed: {
+
+    },
+
+    methods: {
+      isOk: function () {
+        this.ok = !this.ok;
+      },
+      yesOrNo: function(){
+        this.awesome = !this.awesome;
+      },
+
+    },
+
+    watch: {
+
+
+    },
+  })
+</script>
+
+</html>

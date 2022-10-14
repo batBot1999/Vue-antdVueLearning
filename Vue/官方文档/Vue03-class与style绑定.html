@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <h1>对象语法</h1>
+    <p>v-bind:style 的对象语法</p>
+    <div :style="{ color: activeColor, fontSize: fontSize + 'px'  }">我是红色</div>
+    <p>直接绑定到一个样式对象通常更好，这会让模板更清晰</p>
+    <div :style="styleObject">我是绿色</div>
+    <h1>数组语法</h1>
+    <p>v-bind:style 的数组语法可以将多个样式对象应用到同一个元素上：</p>
+    <div v-bind:style="[baseStyles, overridingStyles]">我是40px大小的蓝色</div>
+  </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<script>
+  var app = new Vue({
+    el: '#app',
+    data: {
+      activeColor: 'red',
+      fontSize: 30,
+      styleObject: {
+        color: 'red',
+        fontSize: '13px'
+      },
+      baseStyles: {
+        color: 'blue'
+      },
+      overridingStyles: {
+        fontSize: '40px'
+      },
+
+
+    },
+
+    computed: {
+
+    },
+
+    methods: {
+
+    },
+
+    watch: {
+
+
+    },
+
+    // created 钩子可以用来在一个实例被创建之后执行代码
+    created: function () {
+      console.log(this.created);
+
+    }
+  })
+</script>
+
+</html>

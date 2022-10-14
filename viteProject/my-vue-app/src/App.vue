@@ -1,42 +1,56 @@
-<script setup>
-import HelloWorld from "./components/HelloWorld.vue";
-import BlogPost from "./components/BlogPost.vue";
-import AlertBox from "./components/AlertBox.vue";
-import { ref } from "vue";
-
-const posts = ref([
-  { id: 1, title: "AAA" },
-  { id: 2, title: "BBB" },
-  { id: 3, title: "CCC" },
-]);
-
-const postFontSize = ref(1);
-const count = ref(0);
-</script>
-
 <template>
-  <HelloWorld />
-  <hr />
-  <!-- 父组件中添加一个postFontSize -->
-  <!-- 在模板中用它来控制所有博客文章的字体大小： -->
-  <div :style="{ fontSize: postFontSize + 'em' }">
-    <!-- 父组件可以通过 v-on 或 @ 来选择性地监听子组件上抛的事件，就像监听原生 DOM 事件那样： -->
-    <BlogPost
-      v-for="post in posts"
-      :key="post.id"
-      :title="post.title"
-      @enlarge-text="postFontSize += 0.1"
-    ></BlogPost>
-  </div>
-  <hr />
-  <button @click="count++">Clicked me {{ count }} times.</button>
-  <hr />
-  <p>通过插槽slot来分配内容</p>
-	<AlertBox>
-  	Something bad happened.
-	</AlertBox>
-  <hr>
-
+  <p>{{ message }}</p>
+  <button @click="message = '你好'">改变message</button>
+  <!-- v-model:数据双向绑定 -->
+  <input type="text" v-model="message" />
+  <p>{{ user.name }}</p>
+  <button @click="user.name = '李BB'">改变名字</button>
 </template>
 
-<style scoped></style>
+<script>
+export default {
+  data() {
+    return {
+      message: "helloworld",
+      age: 0,
+      user: {
+        name: "刘AA",
+      }
+    };
+  },
+
+  methods: {},
+
+  // 监听数据的变化
+  watch: {
+    // 不需要this
+    // 每当message发生变化时,就会调用这个函数
+    // 一个数据影响多个数据
+    // message:function(newValue, oldValue) {
+    //   console.log("newValue", newValue);
+    //   console.log("oldValue", oldValue);
+
+    //   // 执行异步操作或者复杂逻辑代码
+    //   if (newValue.length < 5 ||newValue.length > 10) {
+    //     console.log("输入框中内容长度不能小于5或大于10")
+    //   }
+    // }
+
+    message: {
+      immdeiate: true, // 表示初始化时调用函数
+      handler: function (newValue) {
+        if (newValue.length < 5 || newValue.length > 10) {
+          console.log("输入框中内容长度不能小于5或大于10");
+        }
+      },
+    },
+
+      // watch可以监听数据,但如果数据是一个对象,那么他不能监听到对象的属性的变化,所以需要使用深度监听。
+    user:function(newValue) {
+      console.log(newValue); // con
+    }
+  },
+};
+</script>
+
+<style></style>

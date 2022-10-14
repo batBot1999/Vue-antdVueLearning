@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <p>我们可以用 v-for 指令基于一个数组来渲染一个列表。v-for 指令需要使用 item in items 形式的特殊语法，其中 items 是源数据数组，而 item 则是被迭代的数组元素的别名。</p>
+    <ul>
+      <li v-for="item in items" :key="item.message">
+        {{ item.message }}
+      </li>
+    </ul>
+    <hr>
+    <p>在 v-for 块中，我们可以访问所有父作用域的 property。v-for 还支持一个可选的第二个参数，即当前项的索引。</p>
+    <ul>
+      <li v-for="(item, index) in items">
+        {{ parentMessage }} - {{ index }} - {{ item.message }}
+      </li>
+    </ul>
+    <hr>
+    <p>你也可以用 v-for 来遍历一个对象的 property。</p>
+    <ul class="demo">
+      <li v-for="value in object">
+        {{ value }}
+      </li>
+    </ul>
+    <p>也可以提供第二个的参数为 property 名称 (也就是键名)：</p>
+    <hr>
+    <div v-for="(value, name) in object">
+      {{ name }}: {{ value }}
+    </div>
+    <hr>
+    <p>还可以用第三个参数作为索引：</p>
+    <div v-for="(value, name, index) in object">
+      {{ index }}. {{ name }}: {{ value }}
+    </div>
+    <hr>
+    <p>显示过滤/排序后的结果</p>
+    <li v-for="n in evenNumbers">{{ n }}</li>
+    <hr>
+    <p>在计算属性不适用的情况下 (例如，在嵌套 v-for 循环中) 你可以使用一个方法：</p>
+    <ul v-for="set in sets">
+      <li v-for="n in even(set)">{{ n }}</li>
+    </ul>
+
+  </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<script>
+  var app = new Vue({
+    el: '#app',
+    data: {
+      parentMessage: 'Parent',
+      items: [{
+          message: 'A'
+        },
+        {
+          message: 'B'
+        },
+        {
+          message: 'C'
+        },
+        {
+          message: 'D'
+        },
+      ],
+      object: {
+        title: 'title',
+        author: 'autor',
+        publishedAt: '2022-10-13'
+      },
+      numbers: [1, 2, 3, 4, 5],
+      sets: [
+        [1, 2, 3, 4, 5],
+        [6, 7, 8, 9, 10]
+      ]
+
+    },
+
+    computed: {
+      evenNumbers: function () {
+        return this.numbers.filter(function (number) {
+          return number % 2 === 0
+        })
+      }
+    },
+
+    methods: {
+      even: function (numbers) {
+        return numbers.filter(function (number) {
+          return number % 2 === 0
+        })
+      }
+
+    },
+
+    watch: {
+
+
+    },
+
+  })
+</script>
+
+</html>
